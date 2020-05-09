@@ -58,7 +58,8 @@ class AD1vs1Main extends PluginBase
      *
      * Gets the player manager.
      */
-    public static function getPlayerManager() {
+    public static function getPlayerManager()
+    {
         return self::$playerManager;
     }
 
@@ -67,7 +68,8 @@ class AD1vs1Main extends PluginBase
      *
      * Gets the generator manager.
      */
-    public static function getGeneratorManager() {
+    public static function getGeneratorManager()
+    {
         return self::$generatorManager;
     }
 
