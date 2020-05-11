@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1;
 
 
+use jkorn\ad1vs1\duels\Abstract1vs1;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -108,6 +112,57 @@ class AD1vs1Listener implements Listener
                 }
                 $packet->flags = $flags;
             }
+        }
+    }
+
+    /**
+     * @param PlayerInteractEvent $event
+     *
+     * Called when the player interacts with an item.
+     */
+    public function onInteract(PlayerInteractEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if($a1vs1Player !== null
+            && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
+            && $duel instanceof Abstract1vs1)
+        {
+            $duel->canEditArena($event);
+        }
+    }
+
+    /**
+     * @param BlockPlaceEvent $event
+     *
+     * Called when a block is placed.
+     */
+    public function onPlace(BlockPlaceEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if($a1vs1Player !== null
+            && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
+            && $duel instanceof Abstract1vs1)
+        {
+            $duel->canEditArena($event);
+        }
+    }
+
+    /**
+     * @param BlockBreakEvent $event
+     *
+     * Called when a block is broken.
+     */
+    public function onBreak(BlockBreakEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if($a1vs1Player !== null
+            && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
+            && $duel instanceof Abstract1vs1)
+        {
+            $duel->canEditArena($event);
         }
     }
 }

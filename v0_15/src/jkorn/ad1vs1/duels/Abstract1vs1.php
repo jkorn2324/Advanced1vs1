@@ -9,6 +9,8 @@ use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\players\Player1vs1Info;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
+use pocketmine\block\Block;
+use pocketmine\event\Event;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
@@ -404,4 +406,11 @@ abstract class Abstract1vs1
             $player2->getPlayer()->sendMessage(AD1vs1Util::getPrefix() . " " . $message);
         }
     }
+
+    /**
+     * Determine if the players can place or break blocks.
+     *
+     * @param Event $event - The block being placed.
+     */
+    abstract public function canEditArena(Event &$event);
 }

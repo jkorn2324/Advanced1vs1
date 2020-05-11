@@ -9,6 +9,7 @@ use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\Abstract1vs1;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
+use pocketmine\event\Event;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 
@@ -96,5 +97,16 @@ class PostGenerated1vs1 extends Abstract1vs1
         $averageZ = ($pos1->z + $pos2->z) / 2;
 
         return new Position($averageX, $averageY, $averageZ, $this->level);
+    }
+
+    /**
+     * @param Event $event
+     *
+     * Determines whether or not the player can edit the arena.
+     *
+     */
+    public function canEditArena(Event &$event)
+    {
+        // TODO
     }
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1\duels\types;
 
 use jkorn\ad1vs1\duels\Abstract1vs1;
+use pocketmine\block\Block;
+use pocketmine\event\Event;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 
@@ -64,5 +66,15 @@ class PreGenerated1vs1 extends Abstract1vs1
     protected function getCenterPosition()
     {
         // TODO: Implement getCenterPosition() method.
+    }
+
+    /**
+     * @param Event $event
+     *
+     * Determines whether or not the arena can be edited.
+     */
+    public function canEditArena(Event &$event)
+    {
+        // TODO: Implement canEditArena() method.
     }
 }
