@@ -14,6 +14,7 @@ use kitkb\KitKb;
 use kitkb\kits\Kit as KitKbKit;
 use AdvancedKits\Kit as AKKit;
 use AdvancedKits\Main as AdvancedKits;
+use pocketmine\utils\TextFormat;
 
 class AD1vs1KitManager
 {
@@ -98,6 +99,12 @@ class AD1vs1KitManager
 
             if($kitPlugin instanceof KitKb)
             {
+                if($kitPlugin->getDescription()->getVersion() === "1.0.0")
+                {
+                    $this->main->getLogger()->info(AD1vs1Util::getPrefix() . TextFormat::RED . " Update KitKb to 1.0.1 or higher to use with Advanced1vs1. You can do this at https://github.com/jkorn2324/KitKnockback-0.15/releases");
+                    return;
+                }
+
                 $kits = KitKb::getKitHandler()->getKits();
                 foreach($kits as $kitName => $kit) {
                     if(!isset($this->kits[$localizedName = strtolower($kitName)])) {
