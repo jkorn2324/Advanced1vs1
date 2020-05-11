@@ -6,9 +6,13 @@ namespace jkorn\ad1vs1;
 
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\level\generator\Generator;
+use pocketmine\network\protocol\AdventureSettingsPacket;
 use pocketmine\Server;
 
 class AD1vs1Listener implements Listener
@@ -48,5 +52,62 @@ class AD1vs1Listener implements Listener
         $player = $event->getPlayer();
         $player = AD1vs1Main::getPlayerManager()->getPlayer($player);
         $player->onDisconnect();
+    }
+
+    /**
+     * @param PlayerMoveEvent $event
+     * Called when the player moves or not.
+     */
+    public function onMove(PlayerMoveEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+
+        if($a1vs1Player !== null) {
+            $event->setCancelled($a1vs1Player->onMove(
+                $event->getFrom(),
+                $event->getTo()
+            ));
+        }
+    }
+
+    /**
+     * @param PlayerDeathEvent $event
+     * Called when the player dies.
+     */
+    public function onDeath(PlayerDeathEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if($a1vs1Player !== null) {
+            $message = $event->getDeathMessage();
+            $a1vs1Player->onDeath($message);
+            $event->setDeathMessage($message);
+        }
+    }
+
+    /**
+     * @param DataPacketSendEvent $event
+     *
+     * Called when the server sends a packet to the player.
+     */
+    public function onDataPacketSend(DataPacketSendEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if ($a1vs1Player !== null) {
+
+            $packet = $event->getPacket();
+            if($packet instanceof AdventureSettingsPacket)
+            {
+                $flags = $packet->flags;
+                if($a1vs1Player->isFlying())
+                {
+                    // Initial test variable, if it doesn't work, test 0x400.
+                    $flags |= 0x200;
+                }
+                $packet->flags = $flags;
+            }
+        }
     }
 }

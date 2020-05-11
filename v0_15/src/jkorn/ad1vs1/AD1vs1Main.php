@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1;
 
 
+use jkorn\ad1vs1\duels\AD1vs1Manager;
+use jkorn\ad1vs1\kits\types\Default1vs1Kit;
 use jkorn\ad1vs1\level\AD1vs1GeneratorManager;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultRed;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultYellow;
@@ -18,6 +20,8 @@ class AD1vs1Main extends PluginBase
     private static $playerManager;
     /** @var AD1vs1GeneratorManager */
     private static $generatorManager;
+    /** @var AD1vs1Manager */
+    private static $duelsManager;
 
     /**
      * Called when the plugin is enabled.
@@ -29,9 +33,12 @@ class AD1vs1Main extends PluginBase
         self::$playerManager = new AD1vs1PlayerManager($this);
         self::$generatorManager = new AD1vs1GeneratorManager($this);
 
-        $this->registerGenerator();
+        $this->registerGenerators();
 
-        $this->getLogger()->info("Advanced1vs1 is enabled!");
+        new AD1vs1Listener($this);
+        new AD1vs1Task($this);
+
+        $this->getLogger()->info(AD1vs1Util::getPrefix() . " The plugin is now enabled!");
     }
 
 
@@ -40,7 +47,7 @@ class AD1vs1Main extends PluginBase
      */
     public function onDisable()
     {
-        $this->getLogger()->info("Advanced1vs1 is disabled!");
+        $this->getLogger()->info(AD1vs1Util::getPrefix() . " The plugin is now disabled!");
     }
 
     /**
@@ -50,6 +57,24 @@ class AD1vs1Main extends PluginBase
 
         if(!is_dir($this->getDataFolder())) {
             mkdir($this->getDataFolder());
+        }
+
+        if(!file_exists($config = $this->getDataFolder() . "KitConfig.json"))  {
+
+            $file = fopen($config, "w");
+            fclose($file);
+
+            file_put_contents($config, json_encode([
+                "default.kit" => Default1vs1Kit::defaultInfo(),
+                "duel.kits" => [
+                    // Determines which kits in the plugin are for duels or not.
+                    // true = all of them are duel kits
+                    // false or null = none of them are duel kits
+                    // array = list of kits that are only duel kits
+                    "kitkb" => true,
+                    "advancedkits" => true
+                ]
+            ]));
         }
     }
 
@@ -74,9 +99,19 @@ class AD1vs1Main extends PluginBase
     }
 
     /**
+     * @return AD1vs1Manager
+     *
+     * Gets the 1vs1 manager.
+     */
+    public static function get1vs1Manager()
+    {
+        return self::$duelsManager;
+    }
+
+    /**
      * Registers the generators
      */
-    private function registerGenerator() {
+    private function registerGenerators() {
 
         self::$generatorManager->registerGenerator(
             "Default Red",
@@ -89,5 +124,20 @@ class AD1vs1Main extends PluginBase
             AD1vs1GeneratorManager::DEFAULT_YELLOW,
             AD1vs1DefaultYellow::class
         );
+    }
+
+    /**
+     * @return array|mixed
+     *
+     * Gets the plugin data from the json config.
+     */
+    public function getPluginData()
+    {
+        if(file_exists($jsonData = $this->getDataFolder() . "KitConfig.json"))
+        {
+            return json_decode(file_get_contents($jsonData), true);
+        }
+
+        return [];
     }
 }
