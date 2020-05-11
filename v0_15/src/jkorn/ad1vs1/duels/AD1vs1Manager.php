@@ -36,7 +36,7 @@ class AD1vs1Manager
         $this->main = $main;
         $this->server = $main->getServer();
 
-        $this->queuesManager = new AD1vs1QueuesManager();
+        $this->queuesManager = new AD1vs1QueuesManager($main);
 
         $this->duels = [];
     }
@@ -72,15 +72,16 @@ class AD1vs1Manager
     public function putInDuel(AD1vs1Player $player1, AD1vs1Player $player2, string $kit)
     {
         $duelKit = AD1vs1Main::getKitManager()->getKit($kit);
-        if($duelKit !== null || !$duelKit->isValid())
+        if($duelKit === null || !$duelKit->isValid())
         {
+            $this->main->getLogger()->info("Duel kit {$kit} isn't valid");
             return;
         }
 
         $matchID = ++self::$duelsCount;
 
         // TODO: Check if an arena exists.
-        if(AD1vs1Util::isBuildingKit($duelKit->getLocalizedName()))
+        if(true || AD1vs1Util::isBuildingKit($duelKit->getLocalizedName()))
         {
             $randomGenerator = AD1vs1Main::getGeneratorManager()->randomGenerator();
             $levelName = "1vs1.{$matchID}";
@@ -90,7 +91,7 @@ class AD1vs1Manager
             $this->server->generateLevel($levelName, null, $generator);
             $this->server->loadLevel($levelName);
 
-            $duel = new PostGenerated1vs1($matchID, $player1, $player2, $duelKit);
+            $duel = new PostGenerated1vs1($matchID, $player1, $player2, $duelKit, $randomGenerator);
         }
 
 

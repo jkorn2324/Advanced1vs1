@@ -219,7 +219,7 @@ abstract class Abstract1vs1
 
     /**
      * @param null $winner
-     * @param AD1vs1Player|mixed ...$extraData
+     * @param mixed ...$extraData
      *
      * Sets the duel as ended or not.
      */
@@ -240,7 +240,7 @@ abstract class Abstract1vs1
             }
             elseif ($this->player2->equals($winner))
             {
-                $this->setResults($this->player1, $this->player2);
+                $this->setResults($this->player2, $this->player1);
             }
         }
 
@@ -359,7 +359,7 @@ abstract class Abstract1vs1
     abstract public function getID();
 
     /**
-     * @param AD1vs1Player|Player $player
+     * @param Player1vs1Info|AD1vs1Player|Player $player
      * @return bool
      *
      * Determines if the player is part of the duel.

@@ -118,14 +118,14 @@ abstract class Abstract1vs1Generator extends Generator
         $xCheck = false;
         if($chunkXCoord == 0) {
             $xCheck = $x == 0;
-        } elseif ($chunkXCoord == $this->chunkXSize) {
+        } elseif ($chunkXCoord == $this->chunkXSize - 1) {
             $xCheck = $x == 15;
         }
 
         $zCheck = false;
         if($chunkZCoord == 0) {
             $zCheck = $z == 0;
-        } elseif ($chunkZCoord == $this->chunkZSize) {
+        } elseif ($chunkZCoord == $this->chunkZSize - 1) {
             $zCheck = $z == 15;
         }
 

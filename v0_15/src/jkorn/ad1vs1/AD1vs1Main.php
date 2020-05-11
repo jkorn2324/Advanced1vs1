@@ -13,6 +13,7 @@ use jkorn\ad1vs1\level\AD1vs1GeneratorManager;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultRed;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultYellow;
 use jkorn\ad1vs1\player\AD1vs1PlayerManager;
+use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
 
 class AD1vs1Main extends PluginBase
@@ -72,7 +73,7 @@ class AD1vs1Main extends PluginBase
             fclose($file);
 
             file_put_contents($config, json_encode([
-                "default.kit" => Default1vs1Kit::defaultInfo(),
+                AD1vs1KitManager::DEFAULT_KIT_KEY => Default1vs1Kit::defaultInfo(),
                 "duel.kits" => [
                     // Determines which kits in the plugin are for duels or not.
                     // true = all of them are duel kits

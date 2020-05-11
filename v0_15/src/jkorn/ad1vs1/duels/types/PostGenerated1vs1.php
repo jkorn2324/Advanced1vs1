@@ -8,6 +8,7 @@ use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\Abstract1vs1;
 use jkorn\ad1vs1\kits\IDuelKit;
+use jkorn\ad1vs1\level\AD1vs1GeneratorInfo;
 use jkorn\ad1vs1\player\AD1vs1Player;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
@@ -38,10 +39,14 @@ class PostGenerated1vs1 extends Abstract1vs1
     /** @var array|Vector3[] */
     private $blocks = [];
 
-    public function __construct(int $id, AD1vs1Player $p1, AD1vs1Player $p2, IDuelKit $kit)
+    /** @var AD1vs1GeneratorInfo */
+    private $generatorInfo;
+
+    public function __construct(int $id, AD1vs1Player $p1, AD1vs1Player $p2, IDuelKit $kit, AD1vs1GeneratorInfo $info)
     {
         parent::__construct($p1, $p2, $kit, "1vs1.{$id}");
         $this->id = $id;
+        $this->generatorInfo = $info;
     }
 
     /**
@@ -70,12 +75,11 @@ class PostGenerated1vs1 extends Abstract1vs1
      */
     protected function getPlayer1Start()
     {
-        $x = 24; $z = 40;
-        if(AD1vs1Util::isSumoKit($this->kit->getLocalizedName()))
-        {
-            $x = 9; $z = 5;
-        }
-        return new Vector3($x, 100, $z);
+        $center = new Vector3(0, 100, 0);
+        $center->x = ($this->generatorInfo->getWidth() * 16) - 6;
+        $center->z = ($this->generatorInfo->getLength() * 16) / 2;
+
+        return $center;
     }
 
     /**
@@ -85,14 +89,11 @@ class PostGenerated1vs1 extends Abstract1vs1
      */
     protected function getPlayer2Start()
     {
-        $p1Position = clone $this->getPlayer1Start();
-        if(AD1vs1Util::isSumoKit($this->kit->getLocalizedName()))
-        {
-            $p1Position->z = 10;
-        } else {
-            $p1Position->x = 1;
-        }
-        return $p1Position;
+        $center = new Vector3(0, 100, 0);
+        $center->x = 6;
+        $center->z = ($this->generatorInfo->getLength() * 16) / 2;
+
+        return $center;
     }
 
     /**

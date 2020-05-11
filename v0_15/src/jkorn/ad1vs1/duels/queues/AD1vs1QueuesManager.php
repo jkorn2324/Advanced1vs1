@@ -17,8 +17,12 @@ class AD1vs1QueuesManager
     /** @var AD1vs1Queue[] */
     private $queues;
 
-    public function __construct()
+    /** @var AD1vs1Main */
+    private $main;
+
+    public function __construct(AD1vs1Main $main)
     {
+        $this->main = $main;
         $this->queues = [];
     }
 
@@ -57,8 +61,11 @@ class AD1vs1QueuesManager
         );
 
         $queue = new AD1vs1Queue($player, $kit);
-        if(($match = $this->findMatch($queue)) !== null && $match instanceof AD1vs1Queue)
+        $match = $this->findMatch($queue);
+
+        if($match !== null && $match instanceof AD1vs1Queue)
         {
+            $this->main->getLogger()->info("Found match!");
             AD1vs1Main::get1vs1Manager()->putInDuel($queue->getPlayer(), $match->getPlayer(), $kit);
             unset($this->queues[$match->getUniqueID()]);
             return;

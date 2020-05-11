@@ -18,11 +18,16 @@ class AD1vs1GeneratorInfo
     /** @var string */
     private $localizedName;
 
-    public function __construct(string $name, string $localizedName, $clazz)
+    /** @var int */
+    private $width, $length;
+
+    public function __construct(string $name, string $localizedName, $clazz, int $width, int $length)
     {
         $this->generatorName = $name;
         $this->localizedName = $localizedName;
         $this->clazz = $clazz;
+        $this->width = $width;
+        $this->length = $length;
     }
 
     /**
@@ -56,5 +61,25 @@ class AD1vs1GeneratorInfo
      */
     public function register() {
         Generator::addGenerator($this->clazz, $this->localizedName);
+    }
+
+    /**
+     * @return int
+     *
+     * Gets the width.
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int
+     *
+     * Gets the length.
+     */
+    public function getLength()
+    {
+        return $this->length;
     }
 }

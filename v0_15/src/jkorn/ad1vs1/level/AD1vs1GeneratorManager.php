@@ -6,6 +6,7 @@ namespace jkorn\ad1vs1\level;
 
 
 use jkorn\ad1vs1\AD1vs1Main;
+use pocketmine\math\Vector3;
 use pocketmine\Server;
 
 class AD1vs1GeneratorManager
@@ -38,11 +39,13 @@ class AD1vs1GeneratorManager
      * @param string $name
      * @param string $localized
      * @param $object
+     * @param int $width
+     * @param int $length
      *
      * Registers the generator to the list.
      */
-    public function registerGenerator(string $name, string $localized, $object) {
-        $this->generators[$localized] = $info = new AD1vs1GeneratorInfo($name, $localized, $object);
+    public function registerGenerator(string $name, string $localized, $object, int $width = 3, int $length = 3) {
+        $this->generators[$localized] = $info = new AD1vs1GeneratorInfo($name, $localized, $object, $width, $length);
         $info->register();
     }
 

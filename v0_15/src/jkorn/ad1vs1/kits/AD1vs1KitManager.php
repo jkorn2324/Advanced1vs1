@@ -19,6 +19,7 @@ use pocketmine\utils\TextFormat;
 class AD1vs1KitManager
 {
 
+    const DEFAULT_KIT_KEY = "default.kit";
     const DEFAULT_1VS1_KIT = "default";
 
     /** @var IDuelKit[] */
@@ -43,9 +44,9 @@ class AD1vs1KitManager
     private function loadKitInformation()
     {
         $contents = $this->main->getPluginData();
-        if(isset($contents["default.info"]))
+        if(isset($contents[self::DEFAULT_KIT_KEY]))
         {
-            $defaultInfo = $contents["default.info"];
+            $defaultInfo = $contents[self::DEFAULT_KIT_KEY];
             $items = []; $armor = []; $effects = [];
 
             $contentItems = $defaultInfo["items"];
@@ -134,15 +135,14 @@ class AD1vs1KitManager
 
     /**
      * @param string $kitname
-     * @return IDuelKit|mixed|null
+     * @return IDuelKit|null
      *
      * Gets the kit from the kit name.
      */
     public function getKit(string $kitname)
     {
         if(isset($this->kits[strtolower($kitname)])) {
-            $kit = $this->kits[strtolower($kitname)];
-            // TODO
+            return $this->kits[strtolower($kitname)];
         }
 
         return null;

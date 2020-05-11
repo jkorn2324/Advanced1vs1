@@ -102,6 +102,11 @@ class Player1vs1Info
      */
     public function equals($player)
     {
+        if($player instanceof Player1vs1Info)
+        {
+            return $this->player->equals($player->getAD1vs1Player());
+        }
+
         return $this->player->equals($player);
     }
 }

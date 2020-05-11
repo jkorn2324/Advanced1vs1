@@ -82,7 +82,6 @@ class AD1vs1Player
         }
 
         $duelsManager->getQueuesManager()->removeFromQueue($this);
-
         AD1vs1Main::getPlayerManager()->removePlayer($this);
     }
 
@@ -106,9 +105,9 @@ class AD1vs1Player
     /**
      * Called when the player dies.
      *
-     * @param string &$message
+     * @param &$message
      */
-    public function onDeath(string &$message)
+    public function onDeath(&$message)
     {
         if(!$this->isOnline())
         {
