@@ -45,7 +45,10 @@ class AD1vs1Listener implements Listener
         $player = $event->getPlayer();
         ($playerManager = AD1vs1Main::getPlayerManager())->putPlayer($player);
         $player = $playerManager->getPlayer($player);
-        $player->onJoin();
+        if($player !== null)
+        {
+            $player->onJoin();
+        }
     }
 
     /**
@@ -56,7 +59,10 @@ class AD1vs1Listener implements Listener
     {
         $player = $event->getPlayer();
         $player = AD1vs1Main::getPlayerManager()->getPlayer($player);
-        $player->onDisconnect();
+        if($player !== null)
+        {
+            $player->onDisconnect();
+        }
     }
 
     /**
