@@ -7,11 +7,13 @@ namespace jkorn\ad1vs1;
 
 use jkorn\ad1vs1\level\chunk\AD1vs1ChunkLoader;
 use jkorn\ad1vs1\level\tasks\AsyncDeleteLevel;
+use pocketmine\command\Command;
 use pocketmine\entity\Effect;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
@@ -216,5 +218,26 @@ class AD1vs1Util
         {
             $server->getScheduler()->scheduleAsyncTask(new AsyncDeleteLevel($path));
         }
+    }
+
+    /**
+     * @param Vector3 $position
+     * @return string
+     *
+     * Localizes the position so it can be put in an array.
+     */
+    public static function localizePosition(Vector3 $position)
+    {
+        return "{$position->x}:{$position->y}:{$position->z}";
+    }
+
+    /**
+     * @param Command $command
+     *
+     * Registers the command to the map.
+     */
+    public static function registerCommand(Command $command)
+    {
+        Server::getInstance()->getCommandMap()->register($command->getName(), $command);
     }
 }

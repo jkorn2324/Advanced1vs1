@@ -134,7 +134,8 @@ class AD1vs1KitManager
     public function getKit(string $kitname)
     {
         if(isset($this->kits[strtolower($kitname)])) {
-            return $this->kits[strtolower($kitname)];
+            $kit = $this->kits[strtolower($kitname)];
+            // TODO
         }
 
         return null;
@@ -143,7 +144,7 @@ class AD1vs1KitManager
 
     /**
      * @param string $kitName
-     * @return bool - Returns true if it was successfully added.
+     * @return bool - Returns true if it was added/already exists.
      *
      * Puts the kit to the list.
      */
@@ -153,7 +154,7 @@ class AD1vs1KitManager
 
         $kit = $this->getKit($kitName);
         if($kit !== null) {
-            return false;
+            return true;
         }
 
         if($plugin !== null && $plugin->isEnabled())

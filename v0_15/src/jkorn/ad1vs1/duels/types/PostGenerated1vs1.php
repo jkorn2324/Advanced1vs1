@@ -9,7 +9,17 @@ use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\Abstract1vs1;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
+use pocketmine\block\Block;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Event;
+use pocketmine\event\player\PlayerBucketEmptyEvent;
+use pocketmine\event\player\PlayerBucketFillEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\item\Bucket;
+use pocketmine\item\ItemBlock;
+use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 
@@ -24,6 +34,9 @@ class PostGenerated1vs1 extends Abstract1vs1
 
     /** @var int */
     private $id;
+
+    /** @var array|Vector3[] */
+    private $blocks = [];
 
     public function __construct(int $id, AD1vs1Player $p1, AD1vs1Player $p2, IDuelKit $kit)
     {
@@ -100,13 +113,53 @@ class PostGenerated1vs1 extends Abstract1vs1
     }
 
     /**
-     * @param Event $event
+     * @param Event $event - The event being called.
+     * The list of events that this event adheres to are:
+     * - PlayerBucketFillEvent
+     * - PlayerBucketEmptyEvent
+     * - BlockPlaceEvent
+     * - BlockBreakEvent
+     * - BlockUpdateEvent // TODO: Need to add a level checker & a position checker.
      *
      * Determines whether or not the player can edit the arena.
      *
      */
     public function canEditArena(Event &$event)
     {
-        // TODO
+        if($this->status !== self::STATUS_IN_PROGRESS || !AD1vs1Util::isBuildingKit($this->kit->getLocalizedName()))
+        {
+            $event->setCancelled();
+            return;
+        }
+
+        if($event instanceof BlockPlaceEvent)
+        {
+            if(!isset($this->blocks[$localized = AD1vs1Util::localizePosition($event->getBlockReplaced())]))
+            {
+                $this->blocks[$localized] = true;
+                return;
+            }
+        }
+        elseif ($event instanceof BlockBreakEvent)
+        {
+            $block = $event->getBlock();
+            if(isset($this->blocks[$localized = AD1vs1Util::localizePosition($block)]))
+            {
+                unset($this->blocks[$localized]);
+                return;
+            }
+        }
+        elseif ($event instanceof PlayerBucketFillEvent)
+        {
+            // No need to do anything here.
+            return;
+        }
+        elseif ($event instanceof PlayerBucketEmptyEvent)
+        {
+            // No need to do anything here.
+            return;
+        }
+
+        $event->setCancelled();
     }
 }

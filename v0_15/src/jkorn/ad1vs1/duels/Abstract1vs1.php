@@ -9,8 +9,9 @@ use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\players\Player1vs1Info;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
-use pocketmine\block\Block;
 use pocketmine\event\Event;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\item\FlintSteel;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
@@ -75,7 +76,7 @@ abstract class Abstract1vs1
     /**
      * Puts the players in the duel.
      */
-    public function setPlayersInMatch()
+    protected function setPlayersInMatch()
     {
         $ad1vs1P1 = $this->player1->getAD1vs1Player();
         $ad1vs1P2 = $this->player2->getAD1vs1Player();
@@ -272,7 +273,7 @@ abstract class Abstract1vs1
             $status = $reason === self::REASON_LOST ? self::STATUS_ENDING : self::STATUS_ENDED;
         }
 
-        if(isset($winner)) {
+        if(isset($winner) && $status >= self::STATUS_IN_PROGRESS) {
             $this->setEnded($winner, $status);
         } else {
             $this->setEnded(null, $status);
@@ -410,7 +411,31 @@ abstract class Abstract1vs1
     /**
      * Determine if the players can place or break blocks.
      *
-     * @param Event $event - The block being placed.
+     * @param Event $event - The block event.
      */
     abstract public function canEditArena(Event &$event);
+
+    /**
+     * @param Event $event - The event being called.
+     * List of events that this function is called:
+     * - PlayerInteractEvent
+     *
+     * Determines whether or not the player can use an item or not.
+     */
+    public function canUseItem(Event &$event)
+    {
+        if($this->status !== self::STATUS_IN_PROGRESS)
+        {
+            $event->setCancelled();
+            return;
+        }
+
+        if($event instanceof PlayerInteractEvent)
+        {
+            $item = $event->getItem();
+            if($item instanceof FlintSteel) {
+                $event->setCancelled(!AD1vs1Util::isBuildingKit($this->kit->getLocalizedName()));
+            }
+        }
+    }
 }

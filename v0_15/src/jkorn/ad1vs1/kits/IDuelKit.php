@@ -13,4 +13,6 @@ interface IDuelKit
     function getLocalizedName();
 
     function sendTo(AD1vs1Player $player);
+
+    function isValid();
 }

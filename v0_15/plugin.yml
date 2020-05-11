@@ -5,3 +5,8 @@ api: 2.0.0
 author: jkorn
 description: An advanced 1vs1 plugin that uses other kit plugins.
 website: https://github.com/jkorn2324
+
+permissions:
+  permission.ad1vs1.duel:
+    default: true
+    description: Permission to queue to a duel.

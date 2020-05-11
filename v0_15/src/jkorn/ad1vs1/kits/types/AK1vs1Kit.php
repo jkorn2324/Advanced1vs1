@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace jkorn\ad1vs1\kits\types;
 
+use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
 use AdvancedKits\Kit as AKKit;
+use AdvancedKits\Main as AdvancedKits;
 
 /**
  * Class AK1vs1Kit
@@ -19,10 +21,13 @@ class AK1vs1Kit implements IDuelKit
 
     /** @var AKKit $kit */
     private $kit;
+    /** @var string */
+    private $localizedName;
 
     public function __construct(AKKit $kit)
     {
         $this->kit = $kit;
+        $this->localizedName = strtolower($kit->getName());
     }
 
     /**
@@ -32,7 +37,7 @@ class AK1vs1Kit implements IDuelKit
      */
     public function getLocalizedName()
     {
-        return strtolower($this->kit->getName());
+        return $this->localizedName;
     }
 
     /**
@@ -47,5 +52,25 @@ class AK1vs1Kit implements IDuelKit
         }
 
         $this->kit->addTo($player->getPlayer());
+    }
+
+    /**
+     * @return bool
+     *
+     * Determines whether the kit is valid or not.
+     */
+    public function isValid()
+    {
+        $plugin = AD1vs1Util::getKitPlugin();
+        if($plugin instanceof AdvancedKits && $plugin->isEnabled())
+        {
+            $outputKit = $plugin->getKit($this->localizedName);
+            if($outputKit instanceof AKKit)
+            {
+                $this->kit = $outputKit;
+                return true;
+            }
+        }
+        return false;
     }
 }

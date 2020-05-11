@@ -50,6 +50,16 @@ class Default1vs1Kit implements IDuelKit
     }
 
     /**
+     * @return bool
+     *
+     * Determines whether or not the kit is valid or not.
+     */
+    public function isValid()
+    {
+        return true;
+    }
+
+    /**
      * @return array
      *
      * Exports the default 1vs1 kit to a json.

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1;
 
 
+use jkorn\ad1vs1\commands\DuelCommand;
 use jkorn\ad1vs1\duels\AD1vs1Manager;
+use jkorn\ad1vs1\kits\AD1vs1KitManager;
 use jkorn\ad1vs1\kits\types\Default1vs1Kit;
 use jkorn\ad1vs1\level\AD1vs1GeneratorManager;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultRed;
@@ -22,6 +24,8 @@ class AD1vs1Main extends PluginBase
     private static $generatorManager;
     /** @var AD1vs1Manager */
     private static $duelsManager;
+    /** @var AD1vs1KitManager */
+    private static $kitsManager;
 
     /**
      * Called when the plugin is enabled.
@@ -32,8 +36,11 @@ class AD1vs1Main extends PluginBase
 
         self::$playerManager = new AD1vs1PlayerManager($this);
         self::$generatorManager = new AD1vs1GeneratorManager($this);
+        self::$kitsManager = new AD1vs1KitManager($this);
+        self::$duelsManager = new AD1vs1Manager($this);
 
         $this->registerGenerators();
+        $this->registerCommands();
 
         new AD1vs1Listener($this);
         new AD1vs1Task($this);
@@ -109,6 +116,16 @@ class AD1vs1Main extends PluginBase
     }
 
     /**
+     * @return AD1vs1KitManager
+     *
+     * Gets the kit manager.
+     */
+    public static function getKitManager()
+    {
+        return self::$kitsManager;
+    }
+
+    /**
      * Registers the generators
      */
     private function registerGenerators() {
@@ -124,6 +141,14 @@ class AD1vs1Main extends PluginBase
             AD1vs1GeneratorManager::DEFAULT_YELLOW,
             AD1vs1DefaultYellow::class
         );
+    }
+
+    /**
+     * Registers the commands.
+     */
+    private function registerCommands() {
+
+        AD1vs1Util::registerCommand(new DuelCommand());
     }
 
     /**
