@@ -48,7 +48,7 @@ class CreateCommand extends Abstract1vs1Command
             {
                 $sender->sendMessage(
                     AD1vs1Util::getPrefix() . TextFormat::RED . " These remaining variables need to be set: "
-                    . implode("\n", $remainingVariables)
+                    . "\n" . implode("\n", $remainingVariables)
                 );
                 return true;
             }

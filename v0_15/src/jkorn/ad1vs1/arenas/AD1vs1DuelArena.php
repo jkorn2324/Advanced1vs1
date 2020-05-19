@@ -105,15 +105,15 @@ class AD1vs1DuelArena
 
     /**
      * @param string $localizedName
-     * @param array $data
+     * @param $data
      *
      * @return AD1vs1DuelArena|null
      *
      * Decodes the duel arena from the json.
      */
-    public static function decode(string $localizedName, array $data)
+    public static function decode(string $localizedName, $data)
     {
-        if(isset($data["name"], $data["level"], $data["pos1Edge"], $data["pos2Edge"], $data["player1Spawn"], $data["player2Spawn"]))
+        if(is_array($data) && isset($data["name"], $data["level"], $data["pos1Edge"], $data["pos2Edge"], $data["player1Spawn"], $data["player2Spawn"]))
         {
             $server = Server::getInstance();
             $levelName = $data["level"];

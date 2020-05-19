@@ -8,6 +8,7 @@ namespace jkorn\ad1vs1\player\data;
 use jkorn\ad1vs1\arenas\AD1vs1DuelArena;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use pocketmine\utils\TextFormat;
 
 class DuelArenaData
 {
@@ -116,22 +117,22 @@ class DuelArenaData
 
         if($this->pos1 === null)
         {
-            $output[] = "Player1 spawn position. [Vector3] - Command: /p1Spawn";
+            $output[] =  TextFormat::GOLD . " - Player1 spawn position. [Vector3] - Command: /p1Spawn";
         }
 
         if($this->pos2 === null)
         {
-            $output[] = "Player2 spawn position. [Vector3] - Command: /p2Spawn";
+            $output[] = TextFormat::GOLD . " - Player2 spawn position. [Vector3] - Command: /p2Spawn";
         }
 
         if($this->edge1 === null)
         {
-            $output[] = "First arena outside edge. [Vector3] - Command: /edge1";
+            $output[] = TextFormat::GOLD . " - First arena outside edge. [Vector3] - Command: /edge1";
         }
 
         if($this->edge2 === null)
         {
-            $output[] = "Second arena outside edge. [Vector3] - Command: /edge2";
+            $output[] = TextFormat::GOLD . " - Second arena outside edge. [Vector3] - Command: /edge2";
         }
 
         return $output;
