@@ -13,3 +13,6 @@ permissions:
   permission.ad1vs1.manage.arenas:
     default: op
     description: Permission to create, delete, edit arenas.
+  permission.ad1vs1.listarenas:
+    default: op
+    description: Permission to view the list of arenas.

@@ -7,7 +7,9 @@ namespace jkorn\ad1vs1;
 
 use jkorn\ad1vs1\arenas\AD1vs1ArenaManager;
 use jkorn\ad1vs1\commands\arenas\CreateCommand;
+use jkorn\ad1vs1\commands\arenas\DeleteCommand;
 use jkorn\ad1vs1\commands\arenas\EditPosCommand;
+use jkorn\ad1vs1\commands\arenas\ListCommand;
 use jkorn\ad1vs1\commands\DuelCommand;
 use jkorn\ad1vs1\duels\AD1vs1Manager;
 use jkorn\ad1vs1\kits\AD1vs1KitManager;
@@ -192,16 +194,16 @@ class AD1vs1Main extends PluginBase
     /**
      * Registers the commands.
      */
-    private function registerCommands() {
-
+    private function registerCommands()
+    {
         AD1vs1Util::registerCommand(new DuelCommand());
         AD1vs1Util::registerCommand(new EditPosCommand("p1Spawn", "first player's spawn position", "Edits the first player's spawn position in the duel arena."));
         AD1vs1Util::registerCommand(new EditPosCommand("p2Spawn", "second player's spawn position", "Edits the second player's spawn position in the duel arena."));
         AD1vs1Util::registerCommand(new EditPosCommand("edge1", "first outside edge.", "Edits the first edge of the duel arena."));
         AD1vs1Util::registerCommand(new EditPosCommand("edge2", "second outside edge.", "Edits the second edge of the duel arena."));
         AD1vs1Util::registerCommand(new CreateCommand());
-
-        // TODO: Delete, List
+        AD1vs1Util::registerCommand(new ListCommand());
+        AD1vs1Util::registerCommand(new DeleteCommand());
     }
 
     /**

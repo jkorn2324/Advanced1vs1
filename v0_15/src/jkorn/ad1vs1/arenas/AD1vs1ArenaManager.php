@@ -7,6 +7,7 @@ namespace jkorn\ad1vs1\arenas;
 
 use jkorn\ad1vs1\AD1vs1Main;
 use pocketmine\level\Level;
+use pocketmine\utils\TextFormat;
 
 class AD1vs1ArenaManager
 {
@@ -98,6 +99,11 @@ class AD1vs1ArenaManager
         }
 
         unset($this->arenas[$localized]);
+        if(isset($this->inactiveArenas[$localized]))
+        {
+            unset($this->inactiveArenas[$localized]);
+        }
+
         return true;
     }
 
@@ -213,5 +219,35 @@ class AD1vs1ArenaManager
 
         $localized = array_keys($this->inactiveArenas)[mt_rand(0, count($this->inactiveArenas) - 1)];
         return $this->getArena($localized);
+    }
+
+    /**
+     * @return array
+     *
+     * Lists the arenas.
+     */
+    public function listArenas()
+    {
+        if(count($this->arenas) <= 0)
+        {
+            return [TextFormat::RED . "None"];
+        }
+
+        $output = [];
+
+        foreach($this->arenas as $arenaLocalized => $arena)
+        {
+            $string = TextFormat::GOLD . $arena->getName() . TextFormat::GRAY . " [{input}" . TextFormat::GRAY . "]";
+
+            if(isset($this->inactiveArenas[$arenaLocalized])) {
+                $input = TextFormat::GREEN . "Inactive";
+            } else {
+                $input = TextFormat::RED . "Active";
+            }
+
+            $output[] = str_replace("{input}", $input, $string);
+        }
+
+        return $output;
     }
 }

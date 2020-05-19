@@ -17,7 +17,7 @@ class CreateCommand extends Abstract1vs1Command
 
     public function __construct()
     {
-        parent::__construct("duel-create", "Creates a new pre generated duel arena.", "Usage: /duel-create <name>", ["duelCreate"]);
+        parent::__construct("arenacreate", "Creates a new pre generated duel arena.", "Usage: /arenacreate <name>", ["duelCreate", "duelcreate", "arenacreate"]);
         parent::setPermission("permission.ad1vs1.manage.arenas");
 
         $this->canUseInDuel = false;
