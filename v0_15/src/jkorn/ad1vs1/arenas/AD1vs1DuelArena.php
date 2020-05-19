@@ -114,7 +114,7 @@ class AD1vs1DuelArena
      */
     public static function decode(string $localizedName, $data)
     {
-        if(is_array($data) && isset($data["name"], $data["level"], $data["pos1Edge"], $data["pos2Edge"], $data["player1Spawn"], $data["player2Spawn"]))
+        if(isset($data["name"], $data["level"], $data["pos1Edge"], $data["pos2Edge"], $data["player1Spawn"], $data["player2Spawn"]))
         {
             $server = Server::getInstance();
             $levelName = $data["level"];
@@ -123,14 +123,9 @@ class AD1vs1DuelArena
                 $loaded = $server->loadLevel($levelName);
             }
 
-            Server::getInstance()->getLogger()->info("Loaded: " . $loaded);
 
             if($loaded)
             {
-
-                Server::getInstance()->getLogger()->info("Level is loaded for duel arena {$localizedName}!");
-
-
                 $edge1 = AD1vs1Util::arrToVec3($data["pos1Edge"]);
                 $edge2 = AD1vs1Util::arrToVec3($data["pos2Edge"]);
                 $p1 = AD1vs1Util::arrToVec3($data["player1Spawn"]);
@@ -138,8 +133,6 @@ class AD1vs1DuelArena
 
                 if($edge1 !== null && $edge2 !== null && $p1 !== null && $p2 !== null)
                 {
-                    Server::getInstance()->getLogger()->info("AD1vs1DuelArena {$localizedName} should be found!");
-
                     return new AD1vs1DuelArena(
                         $data["name"],
                         $server->getLevelByName($levelName),

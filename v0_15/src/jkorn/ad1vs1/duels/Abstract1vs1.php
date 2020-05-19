@@ -58,7 +58,7 @@ abstract class Abstract1vs1
     {
         $this->server = Server::getInstance();
         $this->currentTick = 0;
-        $this->countdownSeconds = 0;
+        $this->countdownSeconds = 5;
         $this->durationSeconds = 0;
         $this->endingSeconds = 2;
         $this->player1 = new Player1vs1Info($p1);
@@ -130,7 +130,7 @@ abstract class Abstract1vs1
      */
     public function update()
     {
-        $checkSeconds = $this->currentTick % 20 === 0 && $this->currentTick !== 0;
+        $checkSeconds = ($this->currentTick % 20 === 0) && $this->currentTick !== 0;
         if(!$this->player1->isOnline() || !$this->player2->isOnline())
         {
             return true;

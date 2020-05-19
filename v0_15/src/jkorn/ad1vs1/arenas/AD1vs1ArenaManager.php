@@ -48,7 +48,7 @@ class AD1vs1ArenaManager
             return;
         }
 
-        $contents = json_decode(file_get_contents($this->fileName, true));
+        $contents = json_decode(file_get_contents($this->fileName),true);
         foreach($contents as $localizedName => $data)
         {
             $arena = AD1vs1DuelArena::decode($localizedName, $data);
