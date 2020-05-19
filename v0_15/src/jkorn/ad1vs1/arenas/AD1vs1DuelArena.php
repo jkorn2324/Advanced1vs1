@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1\arenas;
 
 
+use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\player\AD1vs1Player;
 use pocketmine\level\Level;
@@ -122,8 +123,14 @@ class AD1vs1DuelArena
                 $loaded = $server->loadLevel($levelName);
             }
 
+            Server::getInstance()->getLogger()->info("Loaded: " . $loaded);
+
             if($loaded)
             {
+
+                Server::getInstance()->getLogger()->info("Level is loaded for duel arena {$localizedName}!");
+
+
                 $edge1 = AD1vs1Util::arrToVec3($data["pos1Edge"]);
                 $edge2 = AD1vs1Util::arrToVec3($data["pos2Edge"]);
                 $p1 = AD1vs1Util::arrToVec3($data["player1Spawn"]);
@@ -131,6 +138,8 @@ class AD1vs1DuelArena
 
                 if($edge1 !== null && $edge2 !== null && $p1 !== null && $p2 !== null)
                 {
+                    Server::getInstance()->getLogger()->info("AD1vs1DuelArena {$localizedName} should be found!");
+
                     return new AD1vs1DuelArena(
                         $data["name"],
                         $server->getLevelByName($levelName),
