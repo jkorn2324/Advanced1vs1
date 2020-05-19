@@ -240,4 +240,140 @@ class AD1vs1Util
     {
         Server::getInstance()->getCommandMap()->register($command->getName(), $command);
     }
+
+    /**
+     * @param AD1vs1Main $main
+     * @return array
+     *
+     * Gets the levels from the folder.
+     */
+    public static function getLevelsFromFolder(AD1vs1Main $main)
+    {
+        $dataFolder = $main->getDataFolder();
+
+        $worlds = substr($dataFolder, 0, strpos($dataFolder, '/plugins')) . '/worlds';
+
+        if(!is_dir($worlds)) {
+            return [];
+        }
+
+        return array_filter(scandir($worlds), function(string $world) {
+            return is_dir($world);
+        });
+    }
+
+    /**
+     * @param Vector3 $vec1
+     * @param Vector3 $vec2
+     *
+     * @return Vector3
+     */
+    public static function getMinimumVector(Vector3 $vec1, Vector3 $vec2)
+    {
+        $minX = $vec1->x;
+        if($minX > $vec2->x)
+        {
+            $minX = $vec2->x;
+        }
+
+        $minY = $vec1->y;
+        if($minY > $vec2->y)
+        {
+            $minY = $vec2->y;
+        }
+
+        $minZ = $vec1->z;
+        if($minZ > $vec2->z)
+        {
+            $minZ = $vec2->z;
+        }
+
+        return new Vector3($minX, $minY, $minZ);
+    }
+
+
+    /**
+     * @param Vector3 $vec1
+     * @param Vector3 $vec2
+     *
+     * @return Vector3
+     *
+     * Gets the maximum vector based on the two vectors.
+     */
+    public static function getMaximumVector(Vector3 $vec1, Vector3 $vec2)
+    {
+        $minX = $vec1->x;
+        if($minX < $vec2->x)
+        {
+            $minX = $vec2->x;
+        }
+
+        $minY = $vec1->y;
+        if($minY < $vec2->y)
+        {
+            $minY = $vec2->y;
+        }
+
+        $minZ = $vec1->z;
+        if($minZ < $vec2->z)
+        {
+            $minZ = $vec2->z;
+        }
+
+        return new Vector3($minX, $minY, $minZ);
+    }
+
+    /**
+     * @param Vector3 $pos
+     *
+     * @return array
+     *
+     * Converts a vector3 to an array.
+     */
+    public static function vec3ToArr(Vector3 $pos)
+    {
+        return [
+            "x" => $pos->x,
+            "y" => $pos->y,
+            "z" => $pos->z
+        ];
+    }
+
+    /**
+     * @param array $data
+     * @return Vector3|null
+     *
+     * Converts an array to a vector3.
+     */
+    public static function arrToVec3(array $data)
+    {
+        if(isset($data["x"], $data["y"], $data["z"]))
+        {
+            return new Vector3(
+                $data["x"],
+                $data["y"],
+                $data["z"]
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $level1
+     * @param $level2
+     *
+     * @return bool
+     *
+     * Determines whether the levels are the same.
+     */
+    public static function areLevelsEqual($level1, $level2)
+    {
+        if($level1 instanceof Level && $level2 instanceof Level)
+        {
+            return $level1->getName() === $level2->getName();
+        }
+
+        return false;
+    }
 }

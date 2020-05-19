@@ -41,14 +41,14 @@ class AD1vs1PlayerManager
     }
 
     /**
-     * @param Player $player
+     * @param $player
      * @return AD1vs1Player|null
      *
      * Gets the player from the list, if the player doesn't exist, the list adds it.
      */
-    public function getPlayer(Player $player) {
+    public function getPlayer($player) {
 
-        if(!$player->isOnline()) {
+        if(!$player instanceof Player || !$player->isOnline()) {
             return null;
         }
 

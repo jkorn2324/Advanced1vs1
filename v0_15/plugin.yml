@@ -10,3 +10,6 @@ permissions:
   permission.ad1vs1.duel:
     default: true
     description: Permission to queue to a duel.
+  permission.ad1vs1.manage.arenas:
+    default: op
+    description: Permission to create, delete, edit arenas.

@@ -8,9 +8,9 @@ namespace jkorn\ad1vs1\player;
 use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\Abstract1vs1;
+use jkorn\ad1vs1\player\data\DuelArenaData;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\Player;
@@ -37,11 +37,15 @@ class AD1vs1Player
     /** @var string */
     private $displayName;
 
+    /** @var DuelArenaData|null */
+    private $playerArenaData;
+
     public function __construct(Player $player)
     {
         $this->player = $player;
         $this->immobile = false;
         $this->flying = true;
+        $this->playerArenaData = null;
         $this->displayName = $player->getDisplayName();
         $this->uniqueID = $player->getUniqueId()->toString();
     }
@@ -357,5 +361,28 @@ class AD1vs1Player
         $this->clearInventory();
 
         $this->player->teleport(AD1vs1Util::getSpawnPosition());
+    }
+
+    /**
+     * @return DuelArenaData
+     *
+     * Gets the player arena data.
+     */
+    public function getPlayerArenaData()
+    {
+        if($this->playerArenaData === null)
+        {
+            return $this->playerArenaData = new DuelArenaData();
+        }
+
+        return $this->playerArenaData;
+    }
+
+    /**
+     * Resets the player arena data.
+     */
+    public function resetPlayerArenaData()
+    {
+        $this->playerArenaData = null;
     }
 }

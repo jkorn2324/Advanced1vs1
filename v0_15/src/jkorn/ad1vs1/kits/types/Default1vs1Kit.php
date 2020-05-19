@@ -46,7 +46,48 @@ class Default1vs1Kit implements IDuelKit
      */
     public function sendTo(AD1vs1Player $player)
     {
-        // TODO: Implement sendTo() method.
+        if(!$player->isOnline())
+        {
+            return;
+        }
+
+        $player->clearInventory();
+        $nPlayer = $player->getPlayer();
+        $inventory = $nPlayer->getInventory();
+
+        foreach($this->items as $slot => $item)
+        {
+            if($item !== null)
+            {
+                $inventory->setItem($slot, $item);
+            }
+        }
+
+        if(isset($this->armor["helmet"]))
+        {
+            $inventory->setArmorItem(0, $this->armor["helmet"] ?? Item::get(0));
+        }
+
+        if(isset($this->armor["chestplate"]))
+        {
+            $inventory->setArmorItem(1, $this->armor["chestplate"] ?? Item::get(0));
+        }
+
+        if(isset($this->armor["leggings"]))
+        {
+            $inventory->setArmorItem(2, $this->armor["leggings"] ?? Item::get(0));
+        }
+
+        if(isset($this->armor["boots"]))
+        {
+            $inventory->setArmorItem(3, $this->armor["boots"] ?? Item::get(0));
+        }
+
+        $nPlayer->removeAllEffects();
+        foreach($this->effects as $effect)
+        {
+            $nPlayer->addEffect($effect);
+        }
     }
 
     /**
