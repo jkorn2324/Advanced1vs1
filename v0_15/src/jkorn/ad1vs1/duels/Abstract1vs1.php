@@ -153,12 +153,12 @@ abstract class Abstract1vs1
             {
                 switch($this->countdownSeconds) {
                     case 5:
-                        $player1->sendTip($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " Duel starting in 5..."));
-                        $player2->sendTip($message);
+                        $player1->sendPopup($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " Duel starting in 5..."));
+                        $player2->sendPopup($message);
                         break;
                     case 0:
-                        $player1->sendTip($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " Duel is starting NOW!"));
-                        $player2->sendTip($message);
+                        $player1->sendPopup($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " Duel is starting NOW!"));
+                        $player2->sendPopup($message);
 
                         $this->status = self::STATUS_IN_PROGRESS;
 
@@ -168,8 +168,8 @@ abstract class Abstract1vs1
                         $this->currentTick++;
                         return true;
                     default:
-                        $player1->sendTip($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " {$this->countdownSeconds}..."));
-                        $player2->sendTip($message);
+                        $player1->sendPopup($message = (AD1vs1Util::getPrefix() . TextFormat::WHITE . " {$this->countdownSeconds}..."));
+                        $player2->sendPopup($message);
                 }
 
                 $this->countdownSeconds--;
