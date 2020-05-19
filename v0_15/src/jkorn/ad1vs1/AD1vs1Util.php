@@ -340,14 +340,14 @@ class AD1vs1Util
     }
 
     /**
-     * @param array $data
+     * @param $data
      * @return Vector3|null
      *
      * Converts an array to a vector3.
      */
-    public static function arrToVec3(array $data)
+    public static function arrToVec3($data)
     {
-        if(isset($data["x"], $data["y"], $data["z"]))
+        if(is_array($data) && isset($data["x"], $data["y"], $data["z"]))
         {
             return new Vector3(
                 $data["x"],
