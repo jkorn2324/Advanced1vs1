@@ -5,6 +5,11 @@
 - Contains support for Minecraft Pocket Edition version **0.15.10** so far, but support for versions **1.1** and the **latest** will eventually be added.
 - Differentiates itself from the **Practice Core** plugin as this plugin only contains a 1vs1 system, while the other plugin contains an arena system, etc...
 
+## Table of Contents
+[TOC]
+
+------------
+
 ## Commands
 
 `/duel <optional - kit>` - Places the player within a queue that is used for actually dueling, the kit parameter is optional and refers to the given kit to duel with or not.
@@ -47,7 +52,7 @@ Contains support for various kit plugins (each listed with the links for the rep
 - [ ] Ability to determine which kits within a specific plugin can be used for duels (SOON).
 - [x] Ability to add custom duel arenas, etc...
 
-#### Versions:
+#### Versions
 - [x] 0.15.10 Support
 	- [x] [AdvancedKits Support](http://github.com/luca28pet/AdvancedKits/tree/46df69c8386ea47ad4137901ea41976701625984 "AdvancedKits Support")
 	- [x] [KitKb Support](http://github.com/jkorn2324/KitKnockback-0.15 "KitKb Support")
