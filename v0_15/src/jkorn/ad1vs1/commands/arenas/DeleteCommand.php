@@ -47,6 +47,9 @@ class DeleteCommand extends Abstract1vs1Command
             }
 
             AD1vs1Main::getArenaManager()->removeArena($args[0]);
+            $sender->sendMessage(
+                AD1vs1Util::getPrefix() . TextFormat::GREEN . " Successfully deleted the duel arena '$args[0]'"
+            );
         }
 
         return true;
