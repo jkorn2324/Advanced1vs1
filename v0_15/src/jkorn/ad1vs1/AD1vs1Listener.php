@@ -8,6 +8,7 @@ namespace jkorn\ad1vs1;
 use jkorn\ad1vs1\duels\Abstract1vs1;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
@@ -153,7 +154,7 @@ class AD1vs1Listener implements Listener
             && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
             && $duel instanceof Abstract1vs1)
         {
-            $duel->canEditArena($event);
+            $duel->onEditArena($event);
         }
     }
 
@@ -170,7 +171,7 @@ class AD1vs1Listener implements Listener
             && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
             && $duel instanceof Abstract1vs1)
         {
-            $duel->canEditArena($event);
+            $duel->onEditArena($event);
         }
     }
 
@@ -187,7 +188,7 @@ class AD1vs1Listener implements Listener
             && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
             && $duel instanceof Abstract1vs1)
         {
-            $duel->canEditArena($event);
+            $duel->onEditArena($event);
         }
     }
 
@@ -204,8 +205,22 @@ class AD1vs1Listener implements Listener
             && ($duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($a1vs1Player)) !== null
             && $duel instanceof Abstract1vs1)
         {
-            $duel->canEditArena($event);
+            $duel->onEditArena($event);
         }
     }
 
+    /**
+     * @param BlockUpdateEvent $event
+     *
+     * Called when a liquid moves.
+     */
+    public function onBlockUpdate(BlockUpdateEvent $event)
+    {
+        $block = $event->getBlock();
+        $duel = AD1vs1Main::get1vs1Manager()->getDuelFromLocation($block);
+        if($duel instanceof Abstract1vs1)
+        {
+            $duel->onEditArena($event);
+        }
+    }
 }

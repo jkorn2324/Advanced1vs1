@@ -413,7 +413,7 @@ abstract class Abstract1vs1
      *
      * @param Event $event - The block event.
      */
-    abstract public function canEditArena(Event &$event);
+    abstract public function onEditArena(Event &$event);
 
     /**
      * @param Event $event - The event being called.
@@ -438,4 +438,12 @@ abstract class Abstract1vs1
             }
         }
     }
+
+    /**
+     * @param Position $position
+     * @return bool
+     *
+     * Determines if the duel contains the position.
+     */
+    abstract public function containsPosition(Position $position);
 }

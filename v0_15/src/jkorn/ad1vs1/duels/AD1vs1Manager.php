@@ -9,9 +9,11 @@ use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\queues\AD1vs1QueuesManager;
 use jkorn\ad1vs1\duels\types\PostGenerated1vs1;
+use jkorn\ad1vs1\duels\types\PreGenerated1vs1;
 use jkorn\ad1vs1\player\AD1vs1Player;
 use pocketmine\level\generator\Generator;
 use pocketmine\level\Level;
+use pocketmine\level\Position;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -80,8 +82,9 @@ class AD1vs1Manager
 
         $matchID = ++self::$duelsCount;
 
-        // TODO: Check if an arena exists.
-        if(true || AD1vs1Util::isBuildingKit($duelKit->getLocalizedName()))
+        $randomArena = AD1vs1Main::getArenaManager()->randomPreGenArena();
+
+        if(AD1vs1Util::isBuildingKit($duelKit->getLocalizedName()) || $randomArena === null)
         {
             $randomGenerator = AD1vs1Main::getGeneratorManager()->randomGenerator();
             $levelName = "1vs1.{$matchID}";
@@ -92,8 +95,9 @@ class AD1vs1Manager
             $this->server->loadLevel($levelName);
 
             $duel = new PostGenerated1vs1($matchID, $player1, $player2, $duelKit, $randomGenerator);
+        } else {
+            $duel = new PreGenerated1vs1($matchID, $player1, $player2, $duelKit, $randomArena);
         }
-
 
         if(isset($duel))
         {
@@ -132,6 +136,24 @@ class AD1vs1Manager
         foreach($this->duels as $duel)
         {
             if($duel->isPlayer($player)) {
+                return $duel;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param Position $position
+     * @return Abstract1vs1|null
+     *
+     * Gets the duel from the location.
+     */
+    public function getDuelFromLocation(Position $position)
+    {
+        foreach($this->duels as $duel)
+        {
+            if($duel->containsPosition($position))
+            {
                 return $duel;
             }
         }

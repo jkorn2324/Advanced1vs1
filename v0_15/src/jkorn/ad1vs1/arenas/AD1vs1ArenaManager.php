@@ -55,6 +55,7 @@ class AD1vs1ArenaManager
             if($arena !== null && $arena instanceof AD1vs1DuelArena)
             {
                 $this->arenas[$arena->getLocalizedName()] = $arena;
+                $this->inactiveArenas[$arena->getLocalizedName()] = true;
             }
         }
     }
@@ -64,7 +65,7 @@ class AD1vs1ArenaManager
      * @param bool $create
      * @return bool
      *
-     * Saves the duel arena.
+     * Adds the duel arena to the list.
      */
     public function addArena(AD1vs1DuelArena $arena, bool $create = true)
     {
@@ -77,6 +78,10 @@ class AD1vs1ArenaManager
             }
         }
         $this->arenas[$localizedName] = $arena;
+        if(!isset($this->inactiveArenas[$localizedName])) {
+            $this->inactiveArenas[$localizedName] = true;
+        }
+
         return true;
     }
 

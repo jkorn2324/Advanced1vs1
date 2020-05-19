@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace jkorn\ad1vs1\duels\types;
 
+use jkorn\ad1vs1\AD1vs1Main;
+use jkorn\ad1vs1\arenas\AD1vs1DuelArena;
 use jkorn\ad1vs1\duels\Abstract1vs1;
-use pocketmine\block\Block;
+use jkorn\ad1vs1\kits\IDuelKit;
+use jkorn\ad1vs1\player\AD1vs1Player;
+use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
@@ -19,13 +23,28 @@ use pocketmine\math\Vector3;
 class PreGenerated1vs1 extends Abstract1vs1
 {
 
+    /** @var AD1vs1DuelArena */
+    private $arena;
+    /** @var int */
+    private $id;
+
+    public function __construct(int $id, AD1vs1Player $p1, AD1vs1Player $p2, IDuelKit $kit, AD1vs1DuelArena $arena)
+    {
+        parent::__construct($p1, $p2, $kit, ($level = $arena->getLevel())->getName());
+        $this->level = $level;
+        $this->arena = $arena;
+        $this->id = $id;
+
+        AD1vs1Main::getArenaManager()->setActive($arena->getLocalizedName());
+    }
 
     /**
      * Kills the duel.
      */
     protected function kill()
     {
-        // TODO: Implement kill() method.
+        AD1vs1Main::getArenaManager()->setInActive($this->arena->getLocalizedName());
+        AD1vs1Main::get1vs1Manager()->removeDuel($this);
     }
 
     /**
@@ -35,7 +54,7 @@ class PreGenerated1vs1 extends Abstract1vs1
      */
     public function getID()
     {
-        // TODO: Implement getID() method.
+        return $this->id;
     }
 
     /**
@@ -45,7 +64,7 @@ class PreGenerated1vs1 extends Abstract1vs1
      */
     protected function getPlayer1Start()
     {
-        // TODO: Implement getPlayer1Start() method.
+        return $this->arena->getP1Spawn();
     }
 
     /**
@@ -55,26 +74,46 @@ class PreGenerated1vs1 extends Abstract1vs1
      */
     protected function getPlayer2Start()
     {
-        // TODO: Implement getPlayer2Start() method.
+        return $this->arena->getP2Spawn();
     }
 
     /**
      * @return Position
      *
-     * Gets the center position of the duel.
+     * Gets the center position of the duel, unused here.
      */
     protected function getCenterPosition()
     {
-        // TODO: Implement getCenterPosition() method.
+        $pos1 = $this->arena->getEdge1();
+        $pos2 = $this->arena->getEdge2();
+
+        $averageX = ($pos1->x + $pos2->x) / 2;
+        $averageY = ($pos1->y + $pos2->y) / 2;
+        $averageZ = ($pos1->z + $pos2->z) / 2;
+
+        return new Position($averageX, $averageY, $averageZ, $this->level);
     }
 
     /**
      * @param Event $event
      *
-     * Determines whether or not the arena can be edited.
+     * Called when the arena is edited.
      */
-    public function canEditArena(Event &$event)
+    public function onEditArena(Event &$event)
     {
-        // TODO: Implement canEditArena() method.
+        if(!$event instanceof BlockUpdateEvent) {
+            $event->setCancelled();
+        }
+    }
+
+    /**
+     * @param Position $position
+     * @return bool
+     *
+     * Determines if the duel contains the position.
+     */
+    public function containsPosition(Position $position)
+    {
+        return $this->arena->isWithinArena($position);
     }
 }

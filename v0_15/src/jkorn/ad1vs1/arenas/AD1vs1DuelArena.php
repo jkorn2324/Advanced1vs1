@@ -10,7 +10,6 @@ use jkorn\ad1vs1\player\AD1vs1Player;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -210,5 +209,55 @@ class AD1vs1DuelArena
                 }
                 break;
         }
+    }
+
+    /**
+     * @return Level
+     *
+     * The level of the arena.
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @return Vector3
+     *
+     * Gets the first player's spawn.
+     */
+    public function getP1Spawn()
+    {
+        return $this->player1Spawn;
+    }
+
+    /**
+     * @return Vector3
+     *
+     * Gets the second player's spawn.
+     */
+    public function getP2Spawn()
+    {
+        return $this->player2Spawn;
+    }
+
+    /**
+     * @return Vector3
+     *
+     * Gets the first edge.
+     */
+    public function getEdge1()
+    {
+        return $this->pos1Edge;
+    }
+
+    /**
+     * @return Vector3
+     *
+     * Gets the second edge.
+     */
+    public function getEdge2()
+    {
+        return $this->pos2Edge;
     }
 }

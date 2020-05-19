@@ -10,17 +10,12 @@ use jkorn\ad1vs1\duels\Abstract1vs1;
 use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\level\AD1vs1GeneratorInfo;
 use jkorn\ad1vs1\player\AD1vs1Player;
-use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\block\BlockEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerBucketFillEvent;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\item\Bucket;
-use pocketmine\item\ItemBlock;
-use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 
@@ -120,16 +115,18 @@ class PostGenerated1vs1 extends Abstract1vs1
      * - PlayerBucketEmptyEvent
      * - BlockPlaceEvent
      * - BlockBreakEvent
-     * - BlockUpdateEvent // TODO: Need to add a level checker & a position checker.
+     * - BlockUpdateEvent
      *
-     * Determines whether or not the player can edit the arena.
-     *
+     * Called when the player edits the arena (places/breaks/etc)
      */
-    public function canEditArena(Event &$event)
+    public function onEditArena(Event &$event)
     {
         if($this->status !== self::STATUS_IN_PROGRESS || !AD1vs1Util::isBuildingKit($this->kit->getLocalizedName()))
         {
-            $event->setCancelled();
+            if(!$event instanceof BlockUpdateEvent)
+            {
+                $event->setCancelled();
+            }
             return;
         }
 
@@ -160,7 +157,23 @@ class PostGenerated1vs1 extends Abstract1vs1
             // No need to do anything here.
             return;
         }
+        elseif ($event instanceof BlockUpdateEvent)
+        {
+            // TODO - Lava buckets, etc...
+            return;
+        }
 
         $event->setCancelled();
+    }
+
+    /**
+     * @param Position $position
+     * @return bool
+     *
+     * Determines if the duel contains the position.
+     */
+    public function containsPosition(Position $position)
+    {
+        return AD1vs1Util::areLevelsEqual($position->getLevel(), $this->level);
     }
 }
