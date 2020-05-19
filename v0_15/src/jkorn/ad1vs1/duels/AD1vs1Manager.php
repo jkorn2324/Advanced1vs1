@@ -95,6 +95,7 @@ class AD1vs1Manager
             $this->server->loadLevel($levelName);
 
             $duel = new PostGenerated1vs1($matchID, $player1, $player2, $duelKit, $randomGenerator);
+
         } else {
             $duel = new PreGenerated1vs1($matchID, $player1, $player2, $duelKit, $randomArena);
         }

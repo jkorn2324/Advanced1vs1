@@ -103,12 +103,22 @@ abstract class Abstract1vs1
             $player1->teleport($position);
         });
 
+        if(!AD1vs1Util::areLevelsEqual($player1->getLevel(), $this->level))
+        {
+            $player1->teleport($position);
+        }
+
         $p2Pos = $this->getPlayer2Start();
         $position = new Position($p2Pos->x, $p2Pos->y, $p2Pos->z, $this->level);
         AD1vs1Util::onChunkGenerated($this->level, $position->x >> 4, $position->z >> 4, function() use ($player2, $position)
         {
             $player2->teleport($position);
         });
+
+        if(!AD1vs1Util::areLevelsEqual($player2->getLevel(), $this->level))
+        {
+            $player2->teleport($position);
+        }
 
         $this->kit->sendTo($ad1vs1P1);
         $this->kit->sendTo($ad1vs1P2);
