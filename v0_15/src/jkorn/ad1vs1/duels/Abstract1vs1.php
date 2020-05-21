@@ -96,6 +96,9 @@ abstract class Abstract1vs1
         $player1 = $ad1vs1P1->getPlayer();
         $player2 = $ad1vs1P2->getPlayer();
 
+        $player1->setHealth($player1->getMaxHealth());
+        $player2->setHealth($player2->getMaxHealth());
+
         $p1Pos = $this->getPlayer1Start();
         $position = new Position($p1Pos->x, $p1Pos->y, $p1Pos->z, $this->level);
         AD1vs1Util::onChunkGenerated($this->level, $position->x >> 4, $position->z >> 4, function() use ($player1, $position)
