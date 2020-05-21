@@ -17,6 +17,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\protocol\AdventureSettingsPacket;
 use pocketmine\Server;
@@ -96,6 +97,22 @@ class AD1vs1Listener implements Listener
             $message = $event->getDeathMessage();
             $a1vs1Player->onDeath($message);
             $event->setDeathMessage($message);
+        }
+    }
+
+    /**
+     * @param PlayerRespawnEvent $event
+     *
+     * Called when the player respawns.
+     */
+    public function onRespawn(PlayerRespawnEvent $event)
+    {
+        $player = $event->getPlayer();
+        $a1vs1Player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        if($a1vs1Player !== null) {
+            $position = $event->getRespawnPosition();
+            $a1vs1Player->onRespawn($position);
+            $event->setRespawnPosition($position);
         }
     }
 
