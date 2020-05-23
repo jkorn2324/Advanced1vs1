@@ -8,9 +8,11 @@ namespace jkorn\ad1vs1\player;
 use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\Abstract1vs1;
+use jkorn\ad1vs1\duels\queues\AD1vs1Queue;
 use jkorn\ad1vs1\player\data\DuelArenaData;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
@@ -78,11 +80,15 @@ class AD1vs1Player
 
     /**
      * Called when the player is disconnected.
+     *
+     * @param PlayerQuitEvent &$event
      */
-    public function onDisconnect()
+    public function onDisconnect(PlayerQuitEvent &$event)
     {
-        $duel = ($duelsManager = AD1vs1Main::get1vs1Manager())->getDuelFromPlayer($this);
-        if($duel !== null) {
+        $duelsManager = AD1vs1Main::get1vs1Manager();
+        $duel = $duelsManager->getDuelFromPlayer($this);
+        if($duel instanceof Abstract1vs1) {
+            $event->setAutoSave(false);
             $duel->removePlayerFromDuel($this, Abstract1vs1::REASON_LEFT_SERVER);
         }
 
@@ -99,6 +105,11 @@ class AD1vs1Player
      */
     public function onMove(Location $from, Location $to)
     {
+        $duel = AD1vs1Main::get1vs1Manager()->getDuelFromPlayer($this);
+        if($duel instanceof Abstract1vs1) {
+            return $duel->getStatus() === Abstract1vs1::STATUS_STARTING && !$duel->canPlayersMove();
+        }
+
         if($this->immobile) {
             return true;
         }
@@ -157,8 +168,7 @@ class AD1vs1Player
      * Determines if the player is in a queue or not.
      */
     public function isInQueue() {
-        // TODO: Do this.
-        return false;
+        return AD1vs1Main::get1vs1Manager()->getQueuesManager()->isInQueue($this);
     }
 
     /**
@@ -179,7 +189,7 @@ class AD1vs1Player
      */
     public function isOnline()
     {
-        return $this->player != null && $this->player->isOnline();
+        return $this->player !== null && $this->player->isOnline();
     }
 
     /**

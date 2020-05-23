@@ -36,6 +36,7 @@ class AD1vs1QueuesManager
     {
         if(!$player->isOnline() || $player->isInDuel())
         {
+            $this->main->getLogger()->info($player->getDisplayName() . " is in a duel or isn't online.");
             return;
         }
 
@@ -117,5 +118,16 @@ class AD1vs1QueuesManager
             }
         }
         return null;
+    }
+
+    /**
+     * @param AD1vs1Player $player
+     * @return bool
+     *
+     * Determines whether or not the player is in a queue.
+     */
+    public function isInQueue(AD1vs1Player $player)
+    {
+        return (isset($this->queues[$uuid = $player->getUniqueId()]));
     }
 }

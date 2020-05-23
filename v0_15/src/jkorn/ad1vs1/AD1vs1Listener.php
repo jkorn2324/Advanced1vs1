@@ -59,11 +59,11 @@ class AD1vs1Listener implements Listener
      */
     public function onQuit(PlayerQuitEvent $event)
     {
-        $player = $event->getPlayer();
-        if($player !== null || !$player->isOnline()) {
-            $player = AD1vs1Main::getPlayerManager()->getPlayer($player);
+        $normalPlayer = $event->getPlayer();
+        if($normalPlayer !== null) {
+            $player = AD1vs1Main::getPlayerManager()->getPlayer($normalPlayer);
             if ($player !== null) {
-                $player->onDisconnect();
+                $player->onDisconnect($event);
                 AD1vs1Main::getPlayerManager()->removePlayer($player);
             }
         }

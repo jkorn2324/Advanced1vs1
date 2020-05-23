@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1\duels;
 
 
+use jkorn\ad1vs1\AD1vs1Main;
 use jkorn\ad1vs1\AD1vs1Util;
 use jkorn\ad1vs1\duels\players\Player1vs1Info;
 use jkorn\ad1vs1\kits\IDuelKit;
@@ -54,6 +55,9 @@ abstract class Abstract1vs1
     /** @var array */
     protected $results;
 
+    /** @var bool */
+    protected $canPlayersMove = true;
+
     public function __construct(AD1vs1Player $p1, AD1vs1Player $p2, IDuelKit $kit, string $level)
     {
         $this->server = Server::getInstance();
@@ -86,9 +90,6 @@ abstract class Abstract1vs1
 
         $ad1vs1P1->disableFlight();
         $ad1vs1P2->disableFlight();
-
-        $ad1vs1P1->setImmobile();
-        $ad1vs1P2->setImmobile();
 
         $ad1vs1P1->clearInventory();
         $ad1vs1P2->clearInventory();
@@ -125,6 +126,8 @@ abstract class Abstract1vs1
 
         $this->kit->sendTo($ad1vs1P1);
         $this->kit->sendTo($ad1vs1P2);
+
+        $this->canPlayersMove = false;
     }
 
     /**
@@ -165,8 +168,7 @@ abstract class Abstract1vs1
 
                         $this->status = self::STATUS_IN_PROGRESS;
 
-                        $ad1vs1Player1->setImmobile(false);
-                        $ad1vs1Player2->setImmobile(false);
+                        $this->canPlayersMove = true;
 
                         $this->currentTick++;
                         return true;
@@ -286,7 +288,7 @@ abstract class Abstract1vs1
             $status = $reason === self::REASON_LOST ? self::STATUS_ENDING : self::STATUS_ENDED;
         }
 
-        if(isset($winner) && $status >= self::STATUS_IN_PROGRESS) {
+        if(isset($winner) && $this->status === self::STATUS_IN_PROGRESS) {
             $this->setEnded($winner, $status);
         } else {
             $this->setEnded(null, $status);
@@ -294,8 +296,16 @@ abstract class Abstract1vs1
 
         if($reason === self::REASON_LEFT_SERVER) {
 
+            $this->canPlayersMove = true;
+
             if(isset($loser)) {
+
                 $loser->setOffline();
+
+                $player = $loser->getAD1vs1Player()->getPlayer();
+                if($player !== null) {
+                    $player->teleportImmediate(AD1vs1Util::getSpawnPosition());
+                }
             }
 
             $this->onEndDuel();
@@ -459,4 +469,24 @@ abstract class Abstract1vs1
      * Determines if the duel contains the position.
      */
     abstract public function containsPosition(Position $position);
+
+    /**
+     * @return int
+     *
+     * Gets the status of the duel.
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return bool
+     *
+     * Determines whether or not the players can move.
+     */
+    public function canPlayersMove()
+    {
+        return $this->canPlayersMove;
+    }
 }

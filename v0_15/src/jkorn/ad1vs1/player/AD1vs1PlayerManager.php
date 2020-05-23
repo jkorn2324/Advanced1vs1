@@ -48,12 +48,18 @@ class AD1vs1PlayerManager
      */
     public function getPlayer($player) {
 
-        if(!$player instanceof Player || !$player->isOnline()) {
+        if(!$player instanceof Player) {
             return null;
         }
 
-        if(!isset($this->players[$uuid = $player->getUniqueId()->toString()])) {
-            return $this->players[$uuid] = new AD1vs1Player($player);
+        $uuid = $player->getUniqueId();
+        if($uuid === null) {
+            return null;
+        }
+
+        if(!isset($this->players[$uuid = $uuid->toString()])) {
+            $this->players[$uuid] = $output = new AD1vs1Player($player);
+            return $output;
         }
 
         return $this->players[$uuid];
