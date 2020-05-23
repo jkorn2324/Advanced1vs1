@@ -47,13 +47,22 @@ class AD1vs1QueuesManager
             return;
         }
 
-        if(isset($this->queues[$player->getUniqueId()])) {
-            unset($this->queues[$player->getUniqueId()]);
-        }
-
         if($kit === "")
         {
             $kit = AD1vs1KitManager::DEFAULT_1VS1_KIT;
+        }
+
+        if(isset($this->queues[$player->getUniqueId()])) {
+
+            $queue = $this->queues[$player->getUniqueId()];
+            if($queue->getKit() === $kit) {
+                $player->getPlayer()->sendMessage(
+                  AD1vs1Util::getPrefix() . " " . TextFormat::RED . " You are already queued for that kit!"
+                );
+                return;
+            }
+
+            unset($this->queues[$player->getUniqueId()]);
         }
 
         $player->getPlayer()->sendMessage(

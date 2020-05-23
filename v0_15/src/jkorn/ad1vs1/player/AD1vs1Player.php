@@ -13,6 +13,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
+use pocketmine\level\Position;
 use pocketmine\Player;
 
 /**
@@ -136,8 +137,19 @@ class AD1vs1Player
 
             $message = "";
             $duel->removePlayerFromDuel($this, $output);
+
+            $this->clearInventory();
+            $this->player->removeAllEffects();
         }
     }
+
+    /**
+     * Called when the player respawns.
+     *
+     * @param Position &$position
+     */
+    public function onRespawn(Position &$position) {}
+
 
     /**
      * @return bool
@@ -348,8 +360,10 @@ class AD1vs1Player
 
     /**
      * Sends the player to the lobby.
+     *
+     * @param bool $teleport
      */
-    public function putInLobby()
+    public function putInLobby(bool $teleport = true)
     {
         if(!$this->isOnline())
         {
@@ -359,7 +373,9 @@ class AD1vs1Player
         $this->player->removeAllEffects();
         $this->clearInventory();
 
-        $this->player->teleport(AD1vs1Util::getSpawnPosition());
+        if($teleport) {
+            $this->player->teleport(AD1vs1Util::getSpawnPosition());
+        }
     }
 
     /**

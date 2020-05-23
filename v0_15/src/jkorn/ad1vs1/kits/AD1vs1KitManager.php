@@ -106,7 +106,12 @@ class AD1vs1KitManager
                     return;
                 }
 
-                $kits = KitKb::getKitHandler()->getKits();
+                $kitManager = KitKb::getKitHandler();
+                if($kitManager === null) {
+                    return;
+                }
+
+                $kits = $kitManager->getKits();
                 foreach($kits as $kitName => $kit) {
                     if(!isset($this->kits[$localizedName = strtolower($kitName)])) {
                         if(!isset($this->duelKits["kitkb"], $this->duelKits["kitkb.{$localizedName}"])) {
