@@ -1,6 +1,6 @@
 name: Advanced1vs1
 main: jkorn\ad1vs1\AD1vs1Main
-version: 1.0.4
+version: 1.0.6
 api: 2.0.0
 author: jkorn
 description: An advanced 1vs1 plugin that uses other kit plugins.
