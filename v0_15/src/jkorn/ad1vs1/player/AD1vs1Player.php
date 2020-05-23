@@ -86,7 +86,6 @@ class AD1vs1Player
         }
 
         $duelsManager->getQueuesManager()->removeFromQueue($this);
-        AD1vs1Main::getPlayerManager()->removePlayer($this);
     }
 
     /**

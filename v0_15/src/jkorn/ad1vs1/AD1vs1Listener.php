@@ -63,6 +63,7 @@ class AD1vs1Listener implements Listener
             $player = AD1vs1Main::getPlayerManager()->getPlayer($player);
             if ($player !== null) {
                 $player->onDisconnect();
+                AD1vs1Main::getPlayerManager()->removePlayer($player);
             }
         }
     }
