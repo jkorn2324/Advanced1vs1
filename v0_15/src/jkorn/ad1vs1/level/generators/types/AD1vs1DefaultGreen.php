@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: jkorn2324
+ * Date: 2020-06-05
+ * Time: 15:03
+ */
 
 declare(strict_types=1);
 
@@ -15,7 +21,7 @@ use pocketmine\level\format\FullChunk;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Random;
 
-class AD1vs1DefaultRed extends Abstract1vs1Generator
+class AD1vs1DefaultGreen extends Abstract1vs1Generator
 {
 
     /** @var array|Block[] */
@@ -33,13 +39,13 @@ class AD1vs1DefaultRed extends Abstract1vs1Generator
     private function initBlocks()
     {
         $this->blocks = [
-            Block::get(Block::STAINED_CLAY, 6),
-            Block::get(Block::STAINED_CLAY, 6),
-            Block::get(Block::STAINED_CLAY, 14),
-            Block::get(Block::STAINED_CLAY, 14),
-            Block::get(Block::WOOL, 14),
-            Block::get(Block::WOOL, 14),
-            Block::get(Block::REDSTONE_BLOCK)
+            Block::get(Block::STAINED_CLAY, 5),
+            Block::get(Block::STAINED_CLAY, 5),
+            Block::get(Block::STAINED_CLAY, 13),
+            Block::get(Block::STAINED_CLAY, 13),
+            Block::get(Block::WOOL, 13),
+            Block::get(Block::WOOL, 5),
+            Block::get(Block::WOOL, 13)
         ];
     }
 
@@ -68,15 +74,17 @@ class AD1vs1DefaultRed extends Abstract1vs1Generator
     }
 
     /**
+     * @return string
+     *
      * Gets the name of the generator.
      */
     public function getName()
     {
-        return AD1vs1GeneratorManager::DEFAULT_RED;
+        return AD1vs1GeneratorManager::DEFAULT_GREEN;
     }
 
     /**
-     * Gets the spawn of the arena.
+     * Gets the spawn.
      * @return Vector3
      */
     public function getSpawn()

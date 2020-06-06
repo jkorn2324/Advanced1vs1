@@ -15,4 +15,6 @@ interface IDuelKit
     function sendTo(AD1vs1Player $player);
 
     function isValid();
+
+    function requiresLowCeiling();
 }

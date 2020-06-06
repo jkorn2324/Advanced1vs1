@@ -21,6 +21,8 @@ use pocketmine\utils\TextFormat;
 class AD1vs1Util
 {
 
+    const CEILING_LOW = 6;
+
     /**
      * @param string $localizedName
      * @return bool
@@ -375,5 +377,24 @@ class AD1vs1Util
         }
 
         return false;
+    }
+
+    /**
+     * @param $object
+     * @return array
+     *
+     * Gets the variables in a class.
+     */
+    public static function getVariablesIn($object)
+    {
+        try
+        {
+            $class = new \ReflectionClass($object);
+            return $class->getDefaultProperties();
+
+        }catch(\Exception $e)
+        {
+            return [];
+        }
     }
 }

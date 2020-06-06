@@ -15,8 +15,12 @@ use jkorn\ad1vs1\duels\AD1vs1Manager;
 use jkorn\ad1vs1\kits\AD1vs1KitManager;
 use jkorn\ad1vs1\kits\types\Default1vs1Kit;
 use jkorn\ad1vs1\level\AD1vs1GeneratorManager;
+use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultGreen;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultRed;
 use jkorn\ad1vs1\level\generators\types\AD1vs1DefaultYellow;
+use jkorn\ad1vs1\level\generators\types\low_ceil\DefaultGreenLowCeil;
+use jkorn\ad1vs1\level\generators\types\low_ceil\DefaultRedLowCeil;
+use jkorn\ad1vs1\level\generators\types\low_ceil\DefaultYellowLowCeil;
 use jkorn\ad1vs1\player\AD1vs1PlayerManager;
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
@@ -181,13 +185,43 @@ class AD1vs1Main extends PluginBase
         self::$generatorManager->registerGenerator(
             "Default Red",
             AD1vs1GeneratorManager::DEFAULT_RED,
-            AD1vs1DefaultRed::class
+            AD1vs1DefaultRed::class,
+            false
         );
 
         self::$generatorManager->registerGenerator(
             "Default Yellow",
             AD1vs1GeneratorManager::DEFAULT_YELLOW,
-            AD1vs1DefaultYellow::class
+            AD1vs1DefaultYellow::class,
+            false
+        );
+
+        self::$generatorManager->registerGenerator(
+            "Default Green",
+            AD1vs1GeneratorManager::DEFAULT_GREEN,
+            AD1vs1DefaultGreen::class,
+            false
+        );
+
+        self::$generatorManager->registerGenerator(
+            "Default Red Low Ceiling",
+            AD1vs1GeneratorManager::DEFAULT_RED_LOW_CEIL,
+            DefaultRedLowCeil::class,
+            true
+        );
+
+        self::$generatorManager->registerGenerator(
+            "Default Yellow Low Ceiling",
+            AD1vs1GeneratorManager::DEFAULT_YELLOW_LOW_CEIL,
+            DefaultYellowLowCeil::class,
+            true
+        );
+
+        self::$generatorManager->registerGenerator(
+            "Default Green Low Ceiling",
+            AD1vs1GeneratorManager::DEFAULT_GREEN_LOW_CEIL,
+            DefaultGreenLowCeil::class,
+            true
         );
     }
 

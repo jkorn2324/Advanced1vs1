@@ -10,6 +10,7 @@ use jkorn\ad1vs1\kits\IDuelKit;
 use jkorn\ad1vs1\player\AD1vs1Player;
 use kitkb\KitKb;
 use kitkb\kits\Kit as KitKbKit;
+use kitkb\kits\KbInfo as Kb;
 
 /**
  * Class KKb1vs1Kit
@@ -73,5 +74,13 @@ class KKb1vs1Kit implements IDuelKit
             }
         }
         return false;
+    }
+
+    /**
+     * Determines if the kit is fly kb or not.
+     */
+    public function requiresLowCeiling()
+    {
+        return strpos($this->localized, "combo") !== false;
     }
 }

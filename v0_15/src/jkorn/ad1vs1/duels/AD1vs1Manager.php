@@ -86,7 +86,7 @@ class AD1vs1Manager
 
         if(AD1vs1Util::isBuildingKit($duelKit->getLocalizedName()) || $randomArena === null)
         {
-            $randomGenerator = AD1vs1Main::getGeneratorManager()->randomGenerator();
+            $randomGenerator = AD1vs1Main::getGeneratorManager()->randomGenerator($duelKit->requiresLowCeiling());
             $levelName = "1vs1.{$matchID}";
 
             $generator = Generator::getGenerator($randomGenerator->getLocalizedName());

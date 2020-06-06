@@ -6,6 +6,7 @@ namespace jkorn\ad1vs1\level;
 
 
 use jkorn\ad1vs1\AD1vs1Main;
+use jkorn\ad1vs1\level\generators\Abstract1vs1Generator;
 use pocketmine\math\Vector3;
 use pocketmine\Server;
 
@@ -13,9 +14,14 @@ class AD1vs1GeneratorManager
 {
 
     const DEFAULT_RED = "1vs1.default.red";
-    const DEFAULT_GREEN = "1vs1.default.green";
-    const DEFAULT_BLUE = "1vs1.default.blue";
     const DEFAULT_YELLOW = "1vs1.default.yellow";
+    const DEFAULT_GREEN = "1vs1.default.green";
+
+    const DEFAULT_RED_LOW_CEIL = "1vs1.default.red.ceiling_low";
+    const DEFAULT_YELLOW_LOW_CEIL = "1vs1.default.yellow.ceiling_low";
+    const DEFAULT_GREEN_LOW_CEIL = "1vs1.default.green.ceiling_low";
+
+    const DEFAULT_BLUE = "1vs1.default.blue";
     const DEFAULT_PURPLE = "1vs1.default.purple";
 
 
@@ -39,24 +45,38 @@ class AD1vs1GeneratorManager
      * @param string $name
      * @param string $localized
      * @param $object
-     * @param int $width
-     * @param int $length
+     * @param bool $lowCeiling
      *
      * Registers the generator to the list.
      */
-    public function registerGenerator(string $name, string $localized, $object, int $width = 3, int $length = 3) {
-        $this->generators[$localized] = $info = new AD1vs1GeneratorInfo($name, $localized, $object, $width, $length);
+    public function registerGenerator(string $name, string $localized, $object, bool $lowCeiling) {
+
+        if(!is_subclass_of($object, Abstract1vs1Generator::class)) {
+            return;
+        }
+
+        $this->generators[$localized] = $info = new AD1vs1GeneratorInfo($name, $localized, $object, $lowCeiling);
         $info->register();
     }
 
     /**
+     * @param bool $lowCeiling
      * @return AD1vs1GeneratorInfo
      *
      * Calls a random generator from the list.
      */
-    public function randomGenerator() {
-        return $this->generators[
-            array_keys($this->generators)[mt_rand(0, count($this->generators) - 1)]
+    public function randomGenerator(bool $lowCeiling = false) {
+
+        $generators = [];
+        foreach($this->generators as $generatorLocalized => $generator)
+        {
+            if($generator->isLowCeiling() === $lowCeiling) {
+                $generators[$generatorLocalized] = $generator;
+            }
+        }
+
+        return $generators[
+            array_keys($generators)[mt_rand(0, count($generators) - 1)]
         ];
     }
 }

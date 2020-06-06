@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace jkorn\ad1vs1\level;
 
 
+use jkorn\ad1vs1\AD1vs1Util;
 use pocketmine\level\generator\Generator;
 
 class AD1vs1GeneratorInfo
@@ -21,13 +22,18 @@ class AD1vs1GeneratorInfo
     /** @var int */
     private $width, $length;
 
-    public function __construct(string $name, string $localizedName, $clazz, int $width, int $length)
+    /** @var bool */
+    private $lowCeiling;
+
+    public function __construct(string $name, string $localizedName, $clazz, bool $lowCeiling)
     {
         $this->generatorName = $name;
         $this->localizedName = $localizedName;
         $this->clazz = $clazz;
-        $this->width = $width;
-        $this->length = $length;
+        $variables = AD1vs1Util::getVariablesIn($clazz);
+        $this->width = $variables["chunkXSize"];
+        $this->length = $variables["chunkZSize"];
+        $this->lowCeiling = $lowCeiling;
     }
 
     /**
@@ -81,5 +87,15 @@ class AD1vs1GeneratorInfo
     public function getLength()
     {
         return $this->length;
+    }
+
+    /**
+     * @return bool
+     * Determines whether or not the
+     * ceiling is low.
+     */
+    public function isLowCeiling()
+    {
+        return $this->lowCeiling;
     }
 }

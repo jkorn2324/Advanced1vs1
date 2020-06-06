@@ -73,4 +73,14 @@ class AK1vs1Kit implements IDuelKit
         }
         return false;
     }
+
+    /**
+     * @return bool
+     *
+     * Determines if the kit is fly kb.
+     */
+    public function requiresLowCeiling()
+    {
+        return false;
+    }
 }
