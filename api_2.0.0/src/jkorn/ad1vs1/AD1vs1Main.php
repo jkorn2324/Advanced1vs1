@@ -24,6 +24,7 @@ use jkorn\ad1vs1\level\generators\types\low_ceil\DefaultYellowLowCeil;
 use jkorn\ad1vs1\player\AD1vs1PlayerManager;
 use pocketmine\math\Vector3;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\Task;
 
 class AD1vs1Main extends PluginBase
 {
@@ -38,6 +39,9 @@ class AD1vs1Main extends PluginBase
     private static $kitsManager;
     /** @var AD1vs1ArenaManager */
     private static $arenaManager;
+
+    /** @var AD1vs1Task */
+    private static $task;
 
     /**
      * Called when the plugin is enabled.
@@ -59,7 +63,7 @@ class AD1vs1Main extends PluginBase
         self::$arenaManager = new AD1vs1ArenaManager($this);
 
         new AD1vs1Listener($this);
-        new AD1vs1Task($this);
+        self::$task = new AD1vs1Task($this);
 
         $this->getLogger()->info(AD1vs1Util::getPrefix() . " The plugin is now enabled!");
     }
@@ -73,6 +77,11 @@ class AD1vs1Main extends PluginBase
         if(self::$arenaManager instanceof AD1vs1ArenaManager)
         {
             self::$arenaManager->saveArenas();
+        }
+
+        if(self::$task instanceof AD1vs1Task)
+        {
+            self::$task->cancel();
         }
 
         $this->getLogger()->info(AD1vs1Util::getPrefix() . " The plugin is now disabled!");

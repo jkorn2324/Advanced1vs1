@@ -2,8 +2,8 @@
 
 - This is a Pocketmine-MP plugin used to add support for advanced 1vs1 systems. 
 - This takes advantage of other, more notable kit plugins, such as AdvancedKits and my KitKB plugin.
-- Contains support for Minecraft Pocket Edition version **0.15.10** so far, but support for versions **1.1** and the **latest** will eventually be added.
-- Differentiates itself from the **Practice Core** plugin as this plugin only contains a 1vs1 system, while the other plugin contains an arena system, etc...
+- Contains support for Pocketmine-API **2.0.0** so far (which supports v0.15.10 & v0.16), but support for upcoming PocketMine API versions, including versions that supports **v1.1** and the **latest** will eventually be added.
+- Differentiates itself from the **Practice Core** plugin as this plugin only contains a 1vs1 system, as the other plugin contains an arena system, etc...
 
 ## Commands
 
@@ -48,7 +48,7 @@ Contains support for various kit plugins (each listed with the links for the rep
 - [x] Ability to add custom duel arenas, etc...
 
 #### Versions
-- [x] 0.15.10 Support
+- [x] 2.0.0 Support [0.15.10 & 0.16.0]
 	- [x] [AdvancedKits Support](http://github.com/luca28pet/AdvancedKits/tree/46df69c8386ea47ad4137901ea41976701625984 "AdvancedKits Support")
 	- [x] [KitKb Support](http://github.com/jkorn2324/KitKnockback-0.15 "KitKb Support")
 - [ ] 1.1.x Support
