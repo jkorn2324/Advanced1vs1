@@ -251,10 +251,7 @@ class AD1vs1Util
      */
     public static function getLevelsFromFolder(AD1vs1Main $main)
     {
-        $dataFolder = $main->getDataFolder();
-
-        $worlds = substr($dataFolder, 0, strpos($dataFolder, '/plugins')) . '/worlds';
-
+        $worlds = $main->getServer()->getDataPath() . "worlds/";
         if(!is_dir($worlds)) {
             return [];
         }
